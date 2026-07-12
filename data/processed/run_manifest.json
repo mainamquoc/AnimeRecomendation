@@ -1,0 +1,201 @@
+{
+  "run_id": "20260712T040205Z",
+  "seed": 42,
+  "python": "3.11.9",
+  "spark": "4.1.2",
+  "java": "17.0.10",
+  "timezone": "UTC",
+  "inputs": [
+    {
+      "path": "database\\rating.csv",
+      "bytes": 111404899,
+      "modified_ns": 1568927112000000000,
+      "sha256": "f2cf790539cff9c7ac462d546381493a5748fc22bedaaf3fbf32d2e10294ab62"
+    },
+    {
+      "path": "database\\anime.csv",
+      "bytes": 936463,
+      "modified_ns": 1568927110000000000,
+      "sha256": "26c27b66120342544f19c9acb575e3dcbf37d46d1898ae57be3167eb0284a845"
+    }
+  ],
+  "validation": {
+    "row_count": 6337232,
+    "duplicate_pairs": 0,
+    "invalid_rows": 0,
+    "orphan_rows": 0,
+    "schema_numeric": true,
+    "passed": true
+  },
+  "rejected": {
+    "reason_counts": {
+      "orphan_watched_unrated": 8,
+      "orphan_explicit": 2
+    },
+    "orphan_anime_ids": [
+      20261,
+      30913,
+      30924
+    ]
+  },
+  "outputs": {
+    "clean_ratings": {
+      "path": "C:\\Users\\Quoc\\Desktop\\DTU\\ML Large Data\\Anime Recommend\\data\\processed\\clean_ratings.parquet",
+      "rows": 6337232,
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "user_id",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "anime_id",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "rating",
+            "type": "double",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      }
+    },
+    "watched_unrated": {
+      "path": "C:\\Users\\Quoc\\Desktop\\DTU\\ML Large Data\\Anime Recommend\\data\\processed\\watched_unrated.parquet",
+      "rows": 1476488,
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "user_id",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "anime_id",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      }
+    },
+    "clean_anime": {
+      "path": "C:\\Users\\Quoc\\Desktop\\DTU\\ML Large Data\\Anime Recommend\\data\\processed\\clean_anime.parquet",
+      "rows": 12294,
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "anime_id",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "genre",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "genres",
+            "type": {
+              "type": "array",
+              "elementType": "string",
+              "containsNull": true
+            },
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "episodes_num",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "episodes_missing",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "members",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "members_missing",
+            "type": "integer",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "log_members",
+            "type": "double",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "community_rating",
+            "type": "double",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "has_explicit_interaction",
+            "type": "boolean",
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      }
+    },
+    "genre_features": {
+      "path": "C:\\Users\\Quoc\\Desktop\\DTU\\ML Large Data\\Anime Recommend\\data\\processed\\genre_features.parquet",
+      "rows": 12294,
+      "schema": {
+        "type": "struct",
+        "fields": [
+          {
+            "name": "anime_id",
+            "type": "long",
+            "nullable": true,
+            "metadata": {}
+          },
+          {
+            "name": "genres",
+            "type": {
+              "type": "array",
+              "elementType": "string",
+              "containsNull": true
+            },
+            "nullable": true,
+            "metadata": {}
+          }
+        ]
+      }
+    }
+  }
+}
