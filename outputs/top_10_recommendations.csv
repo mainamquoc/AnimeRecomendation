@@ -1,0 +1,71 @@
+user_id,rank,anime_id,name,genre,type,episodes,anime_average_rating,members,predicted_rating
+10004,1,820,Ginga Eiyuu Densetsu,"Drama, Military, Sci-Fi, Space",OVA,110.0,9.11,80679,9.807743402196994
+10004,2,918,Gintama,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,201.0,9.04,336376,9.664618452528044
+10004,3,3297,Aria The Origination,"Fantasy, Sci-Fi, Shounen, Slice of Life",TV,13.0,8.64,56162,9.61141592980805
+10004,4,15417,Gintama&#039;: Enchousen,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,13.0,9.11,81109,9.603825650287812
+10004,5,15335,Gintama Movie: Kanketsu-hen - Yorozuya yo Eien Nare,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",Movie,1.0,9.1,72534,9.599335255802254
+10004,6,16498,Shingeki no Kyojin,"Action, Drama, Fantasy, Shounen, Super Power",TV,25.0,8.54,896229,9.573767579281233
+10004,7,6594,Katanagatari,"Action, Adventure, Historical, Martial Arts, Romance",TV,12.0,8.49,207241,9.556761795774495
+10004,8,28977,Gintama°,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,51.0,9.25,114262,9.539535075354767
+10004,9,6114,Rainbow: Nisha Rokubou no Shichinin,"Drama, Historical, Seinen, Thriller",TV,26.0,8.64,139474,9.519311012308737
+10004,10,24701,Mushishi Zoku Shou 2nd Season,"Adventure, Fantasy, Historical, Mystery, Seinen, Slice of Life, Supernatural",TV,10.0,8.88,75894,9.490487878993918
+10060,1,820,Ginga Eiyuu Densetsu,"Drama, Military, Sci-Fi, Space",OVA,110.0,9.11,80679,10.0
+10060,2,32281,Kimi no Na wa.,"Drama, Romance, School, Supernatural",Movie,1.0,9.37,200630,9.646203554542145
+10060,3,2001,Tengen Toppa Gurren Lagann,"Action, Adventure, Comedy, Mecha, Sci-Fi",TV,27.0,8.78,562962,9.608238613752329
+10060,4,28977,Gintama°,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,51.0,9.25,114262,9.600402152657235
+10060,5,15335,Gintama Movie: Kanketsu-hen - Yorozuya yo Eien Nare,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",Movie,1.0,9.1,72534,9.554913452887368
+10060,6,9969,Gintama&#039;,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,51.0,9.16,151266,9.497524947963027
+10060,7,457,Mushishi,"Adventure, Fantasy, Historical, Mystery, Seinen, Slice of Life, Supernatural",TV,26.0,8.78,300030,9.38369945938473
+10060,8,15417,Gintama&#039;: Enchousen,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,13.0,9.11,81109,9.366257877214872
+10060,9,32,Neon Genesis Evangelion: The End of Evangelion,"Dementia, Drama, Mecha, Psychological, Sci-Fi",Movie,1.0,8.45,215630,9.355272664005641
+10060,10,5114,Fullmetal Alchemist: Brotherhood,"Action, Adventure, Drama, Fantasy, Magic, Military, Shounen",TV,64.0,9.26,793665,9.326274656495636
+24323,1,94,Mobile Suit Gundam Seed Destiny,"Action, Drama, Mecha, Military, Romance, Sci-Fi, Space",TV,50.0,7.36,65896,5.4148561167866935
+24323,2,199,Sen to Chihiro no Kamikakushi,"Adventure, Drama, Supernatural",Movie,1.0,8.93,466254,4.76738946563981
+24323,3,4181,Clannad: After Story,"Drama, Fantasy, Romance, Slice of Life, Supernatural",TV,24.0,9.06,456749,4.583810502797018
+24323,4,4437,Naruto: Shippuuden Movie 2 - Kizuna,"Action, Martial Arts, Shounen, Supernatural",Movie,1.0,7.43,97818,4.5430824157822425
+24323,5,93,Mobile Suit Gundam Seed,"Action, Drama, Mecha, Military, Romance, Sci-Fi, Space",TV,50.0,7.93,96973,4.471213184212739
+24323,6,16742,Watashi ga Motenai no wa Dou Kangaetemo Omaera ga Warui!,"Comedy, School, Shounen, Slice of Life",TV,12.0,7.29,257925,4.47095280162487
+24323,7,13125,Shinsekai yori,"Drama, Horror, Mystery, Sci-Fi, Supernatural",TV,25.0,8.53,288376,4.467672918590935
+24323,8,6702,Fairy Tail,"Action, Adventure, Comedy, Fantasy, Magic, Shounen",TV,175.0,8.22,584590,4.3988557592453255
+24323,9,267,Gungrave,"Action, Drama, Sci-Fi, Seinen, Super Power",TV,26.0,7.97,95825,4.351581428844466
+24323,10,820,Ginga Eiyuu Densetsu,"Drama, Military, Sci-Fi, Space",OVA,110.0,9.11,80679,4.340632375454385
+25321,1,820,Ginga Eiyuu Densetsu,"Drama, Military, Sci-Fi, Space",OVA,110.0,9.11,80679,9.710535928584207
+25321,2,32,Neon Genesis Evangelion: The End of Evangelion,"Dementia, Drama, Mecha, Psychological, Sci-Fi",Movie,1.0,8.45,215630,9.663643771165335
+25321,3,3297,Aria The Origination,"Fantasy, Sci-Fi, Shounen, Slice of Life",TV,13.0,8.64,56162,9.406884740711726
+25321,4,15417,Gintama&#039;: Enchousen,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,13.0,9.11,81109,9.295076744464813
+25321,5,11061,Hunter x Hunter (2011),"Action, Adventure, Shounen, Super Power",TV,148.0,9.13,425855,9.292712071854167
+25321,6,2904,Code Geass: Hangyaku no Lelouch R2,"Action, Drama, Mecha, Military, Sci-Fi, Super Power",TV,25.0,8.98,572888,9.192648646097556
+25321,7,28977,Gintama°,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,51.0,9.25,114262,9.162367883009274
+25321,8,32281,Kimi no Na wa.,"Drama, Romance, School, Supernatural",Movie,1.0,9.37,200630,9.143551636744608
+25321,9,14719,JoJo no Kimyou na Bouken (TV),"Action, Adventure, Shounen, Supernatural, Vampire",TV,26.0,8.51,190197,9.109540646583975
+25321,10,1575,Code Geass: Hangyaku no Lelouch,"Action, Mecha, Military, School, Sci-Fi, Super Power",TV,25.0,8.83,715151,9.084185294682495
+42635,1,820,Ginga Eiyuu Densetsu,"Drama, Military, Sci-Fi, Space",OVA,110.0,9.11,80679,8.835003405638876
+42635,2,3297,Aria The Origination,"Fantasy, Sci-Fi, Shounen, Slice of Life",TV,13.0,8.64,56162,8.781969879745274
+42635,3,339,Serial Experiments Lain,"Dementia, Drama, Mystery, Psychological, Sci-Fi, Supernatural",TV,13.0,7.99,215829,8.750389489476884
+42635,4,15417,Gintama&#039;: Enchousen,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,13.0,9.11,81109,8.509590527353957
+42635,5,28977,Gintama°,"Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen",TV,51.0,9.25,114262,8.487183135157727
+42635,6,2001,Tengen Toppa Gurren Lagann,"Action, Adventure, Comedy, Mecha, Sci-Fi",TV,27.0,8.78,562962,8.44768694864516
+42635,7,66,Azumanga Daioh,"Comedy, School, Slice of Life",TV,26.0,8.06,170901,8.43987232697498
+42635,8,17074,Monogatari Series: Second Season,"Comedy, Mystery, Romance, Supernatural, Vampire",TV,26.0,8.8,205959,8.40735279642497
+42635,9,4181,Clannad: After Story,"Drama, Fantasy, Romance, Slice of Life, Supernatural",TV,24.0,9.06,456749,8.305291712125515
+42635,10,1827,Seirei no Moribito,"Action, Adventure, Fantasy, Historical",TV,26.0,8.24,106888,8.301870925587172
+45649,1,1,Cowboy Bebop,"Action, Adventure, Comedy, Drama, Sci-Fi, Space",TV,26.0,8.82,486824,10.0
+45649,2,1000,Uchuu Kaizoku Captain Harlock,"Action, Adventure, Drama, Sci-Fi, Seinen, Space",TV,42.0,7.87,14869,10.0
+45649,3,10012,Carnival Phantasm,"Comedy, Parody, Supernatural",OVA,12.0,8.01,71976,10.0
+45649,4,1002,Top wo Nerae 2! Diebuster,"Action, Comedy, Mecha, Sci-Fi, Space",OVA,6.0,7.81,38691,10.0
+45649,5,10020,Ore no Imouto ga Konnani Kawaii Wake ga Nai Specials,"Comedy, Seinen, Slice of Life",ONA,4.0,7.66,101495,10.0
+45649,6,10029,Coquelicot-zaka kara,"Historical, Romance, School, Shoujo",Movie,1.0,8.03,50689,10.0
+45649,7,1003,Aa! Megami-sama! (TV) Specials,"Comedy, Magic, Romance, Seinen, Supernatural",Special,3.0,7.61,19257,10.0
+45649,8,10030,Bakuman. 2nd Season,"Comedy, Drama, Romance, Shounen",TV,25.0,8.53,151561,10.0
+45649,9,10033,Toriko,"Action, Adventure, Comedy, Fantasy, Shounen",TV,147.0,7.74,54790,10.0
+45649,10,1004,Kanojo to Kanojo no Neko,"Drama, Psychological, Romance, Slice of Life",OVA,1.0,7.52,53463,10.0
+65836,1,1,Cowboy Bebop,"Action, Adventure, Comedy, Drama, Sci-Fi, Space",TV,26.0,8.82,486824,10.0
+65836,2,1535,Death Note,"Mystery, Police, Psychological, Supernatural, Thriller",TV,37.0,8.71,1013917,10.0
+65836,3,820,Ginga Eiyuu Densetsu,"Drama, Military, Sci-Fi, Space",OVA,110.0,9.11,80679,9.467631490489635
+65836,4,13125,Shinsekai yori,"Drama, Horror, Mystery, Sci-Fi, Supernatural",TV,25.0,8.53,288376,9.424185786620447
+65836,5,9253,Steins;Gate,"Sci-Fi, Thriller",TV,24.0,9.17,673572,9.41218213041368
+65836,6,457,Mushishi,"Adventure, Fantasy, Historical, Mystery, Seinen, Slice of Life, Supernatural",TV,26.0,8.78,300030,9.266579246908002
+65836,7,263,Hajime no Ippo,"Comedy, Drama, Shounen, Sports",TV,75.0,8.83,157670,9.137492409837536
+65836,8,4181,Clannad: After Story,"Drama, Fantasy, Romance, Slice of Life, Supernatural",TV,24.0,9.06,456749,9.089899639640768
+65836,9,2001,Tengen Toppa Gurren Lagann,"Action, Adventure, Comedy, Mecha, Sci-Fi",TV,27.0,8.78,562962,9.05424843831852
+65836,10,22135,Ping Pong The Animation,"Psychological, Seinen, Sports",TV,11.0,8.67,97187,9.000394549037031

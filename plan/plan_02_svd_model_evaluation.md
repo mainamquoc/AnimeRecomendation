@@ -31,7 +31,7 @@ Project decisions inherited from the earlier plans:
 | `cleaned_data/ratings_clean.csv` | SVD training and evaluation signal | `user_id`, `anime_id`, `rating` |
 | `cleaned_data/anime_clean.csv` | Metadata used to display recommendations | `anime_id`, `name`, `genre`, `type`, `episodes`, `anime_average_rating`, `members` |
 
-At the time of planning, both files exist in `cleaned_data/`; `ratings_clean.csv` is about 102 MB and `anime_clean.csv` is about 0.96 MB. Notebook 01 currently names `data/` as its output path in source code, while the actual cleaned artifacts are in `cleaned_data/`. Therefore, Notebook 02 must read **only and explicitly** from `cleaned_data/`; do not implement a hidden path fallback. If Notebook 01 is later changed to export into `data/`, update the single Notebook 02 path constant and the README at the same time.
+At the time of planning, both files exist in `cleaned_data/`; `ratings_clean.csv` is about 102 MB and `anime_clean.csv` is about 0.96 MB. In Colab, Notebook 02 first uses files uploaded directly to `/content/` (`/content/ratings_clean.csv` and `/content/anime_clean.csv`) when both are present. Otherwise it falls back explicitly to the project's local `cleaned_data/` directory, checking the current working directory and its parent so the notebook runs from either the project root or `notebooks/`. It reports the selected source and fails clearly if neither location contains both files. It must never read the raw dataset or `data/`.
 
 ### Proposed outputs
 
@@ -140,11 +140,11 @@ MAX_CORE_FILTER_PASSES = 10
 TEST_SIZE = 0.20
 K = 10
 POSITIVE_RATING = 8
-N_EXAMPLE_USERS = 5
+N_EXAMPLE_USERS = 7
 MIN_RATINGS_FOR_EXAMPLE_USER = 20
 ```
 
-Locate `PROJECT_ROOT` as in Notebook 01 so the notebook runs from either the project root or `notebooks/`. Declare `CLEANED_DATA_DIR = PROJECT_ROOT / "cleaned_data"`, input paths, `OUTPUTS_DIR`, and `FIGURES_DIR`. Fail fast with an English error if a required file is missing.
+Resolve the input pair before declaring output paths: prefer `/content/ratings_clean.csv` and `/content/anime_clean.csv` when both Colab files exist; otherwise check `cleaned_data/` from the current directory and its parent. Record `CLEANED_DATA_DIR`, `RATINGS_PATH`, `ANIME_PATH`, the selected source, `PROJECT_ROOT`, `OUTPUTS_DIR`, and `FIGURES_DIR`. Fail fast with an English error that lists the attempted locations if a complete pair is missing.
 
 **Cell 2 -- Helper Functions**
 
@@ -271,13 +271,13 @@ Never replace the outer-test metric results with this final model; it is only th
 
 **Cell 14 -- Select Example Users, Rank Candidates, and Export**
 
-- If `EXAMPLE_USER_IDS` is declared, validate those IDs. If it is `None`, select five users with at least `MIN_RATINGS_FOR_EXAMPLE_USER` ratings deterministically by ascending `user_id` and take the first five. State this rule in English Markdown.
+- If `EXAMPLE_USER_IDS` is declared, validate those IDs. If it is `None`, select seven distinct, reproducible demonstration scenarios from observed rating history: limited history (5--9 ratings), developing history (10--19 ratings), typical history, very active, highly positive, more critical, and broad genre exposure. The latter five require at least `MIN_RATINGS_FOR_EXAMPLE_USER` ratings. Use deterministic sorting and a deterministic unused-user fallback so the seven examples are always distinct. State clearly that scenario labels describe observed ratings only, not SVD latent factors or guaranteed future preferences.
 - For every user, predict all candidates with `final_model.predict(uid, iid).est`, sort by descending predicted rating with ascending `anime_id` as the tie-breaker, and take `K = 10`.
 - Left join `anime_clean`. Use `"Unknown title (ID: <anime_id>)"` for missing names and `"Unknown"` for missing genres. Do not use `anime_average_rating` as a training label or predicted score.
 - Export this exact column order: `user_id`, `rank`, `anime_id`, `name`, `genre`, `type`, `episodes`, `anime_average_rating`, `members`, `predicted_rating`.
 - Assert that every exported user has ten rows, ranks 1--10, contains no anime rated in `ratings_model`, and has no duplicate `(user_id, anime_id)` pair.
 
-Display a readable English table for at least one selected user for use in the demo or slides.
+Display a compact scenario-profile table and a readable English Top-10 table for every selected user, so the demo can compare recommendations across different user contexts. Keep the exported CSV schema unchanged.
 
 ### 7. `## Conclusion, Limitations, and Reproducibility`
 
@@ -320,7 +320,7 @@ Do not overstate the metrics: RMSE/MAE measure rating-prediction error, while Pr
 ## 6. Acceptance checklist before committing Notebook 02
 
 - [ ] The notebook runs top-to-bottom with `MAX_RATINGS = 1_000_000` and does not depend on manually created intermediate artifacts.
-- [ ] The notebook reads only `cleaned_data/ratings_clean.csv` and `cleaned_data/anime_clean.csv`; it does not read the raw dataset.
+- [ ] The notebook first uses both cleaned files uploaded to the Colab server root when present, otherwise explicitly falls back to the project's local `cleaned_data/` directory; it does not read the raw dataset.
 - [ ] Every Notebook 02 Markdown cell, code comment, function/variable name, printed message, table, chart, and exported column name is in English.
 - [ ] The notebook includes M0--M10 from Section 4.0, including the SVD prediction equation, parameter-role table, leakage explanation, ranking worked example, and separate evaluation-versus-serving explanation.
 - [ ] Conceptual Markdown does not hard-code run-dependent counts or metrics and does not describe latent factors as known genre labels.
