@@ -11,7 +11,7 @@ notebooks/
   01_eda_data_preparation.ipynb
   02_svd_model_evaluation.ipynb
 outputs/               Evaluation metrics, recommendations, and figures
-overleaf-report/       LaTeX source and compiled project report
+Latex-report/       LaTeX source and compiled project report
 ```
 
 ## Dataset
