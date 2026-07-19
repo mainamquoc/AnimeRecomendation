@@ -1,4 +1,4 @@
-% Compile with XeLaTeX + Biber in Overleaf.
+﻿% Compile with XeLaTeX + Biber in Overleaf.
 \documentclass[12pt,a4paper]{article}
 
 \usepackage[a4paper,margin=2.5cm]{geometry}
@@ -25,15 +25,15 @@
 
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcommand{\projecttitle}{Anime Recommendation System}
-\newcommand{\memberone}{Mai Nam Quốc -- 29211145181}
-\newcommand{\membertwo}{Trương Nhật Trường -- 29211164915}
+\newcommand{\memberone}{Mai Nam Quá»‘c -- 29211145181}
+\newcommand{\membertwo}{TrÆ°Æ¡ng Nháº­t TrÆ°á»ng -- 29211164915}
 
 
 % Keep full identities on the cover, but use concise names in body text.
 \let\memberonefull\memberone
 \let\membertwofull\membertwo
-\renewcommand{\memberone}{Quốc}
-\renewcommand{\membertwo}{Trường}
+\renewcommand{\memberone}{Quá»‘c}
+\renewcommand{\membertwo}{TrÆ°á»ng}
 
 \title{\projecttitle}
 \author{Group 14}
@@ -75,7 +75,7 @@
 \begin{abstract}
 Anime catalogues are large enough that manually finding titles aligned with a viewer's preferences is difficult. This project builds a collaborative-filtering recommender that estimates a user's preference for unseen anime and returns a Top-10 list. The Anime Recommendations Database provides 7,813,737 user--anime interactions and title metadata. Data preparation removed 1,476,496 watched-but-unrated records encoded as $-1$, merged seven repeated user--anime pairs, and retained 6,337,234 valid explicit ratings on the original 1--10 scale. The resulting matrix is sparse (0.9172\%), with positively skewed ratings and highly unequal user histories.
 
-For a reproducible resource-aware experiment, the modeling notebook randomly sampled one million cleaned ratings, applied a minimum-five-interaction k-core filter, and trained a biased SVD model on an 80/20 outer holdout split. The model obtained RMSE 1.2632, MAE 0.9625, Precision@10 0.6386, and Recall@10 0.8255 under held-out observed-item ranking. These results describe the sampled and filtered evaluation population, rather than the whole catalogue. The system cannot fully address new users or new anime, and observed-item ranking is not equivalent to full-catalog ranking.
+For a reproducible resource-aware experiment, the modeling notebook randomly sampled one million cleaned ratings, applied a minimum-five-interaction k-core filter, and trained a biased SVD model on an 80/20 outer holdout split. A validation split inside the outer training data selected 30 latent factors from the candidates 30, 50, and 100. The resulting model obtained RMSE 1.2551, MAE 0.9560, Precision@10 0.6397, and Recall@10 0.8273 under held-out observed-item ranking. These results describe the sampled and filtered evaluation population, rather than the whole catalogue. The system cannot fully address new users or new anime, and observed-item ranking is not equivalent to full-catalog ranking.
 \end{abstract}
 
 \section{Project approach and team workflow}
@@ -156,16 +156,16 @@ The modelling work converted the data handoff into a reproducible recommendation
     \endlastfoot
     1. Recheck the modelling input & The cleaned schemas, scale, sentinel removal, duplicate-key condition, and metadata role. & Treat Notebook 01 as the only source of model input and revalidate it on load. This prevents a local manual change or an incorrect raw file from silently changing the experiment. Keep metadata out of SVD fitting and reserve it for readable recommendation output. & Validated \texttt{ratings\_clean} and \texttt{anime\_clean} inputs. \\
     2. Choose model scope and method & The 6.3-million-row cleaned dataset, sparse EDA results, and personal-computer resource limits. & Use deterministic sampling of 1,000,000 ratings with seed 42, followed by iterative user/item k-core filtering at five interactions. Choose biased SVD because it estimates explicit ratings from observed collaborative patterns without treating missing cells as zero. & \texttt{ratings\_model}: 952,497 interactions, 41,370 users, and 5,985 anime; an explicit scope limitation. \\
-    3. Protect the holdout experiment & The risk that test ratings could influence fitted parameters or configuration decisions. & Split the filtered data once into 80\% training and 20\% outer test data before fitting. Use the fixed 50-factor, 20-epoch baseline with learning rate 0.005, regularisation 0.02, and seed 42. Keep lightweight tuning disabled, so the test set is neither a tuning set nor a source of optimistic model selection. & 761,997 training ratings, 190,500 held-out ratings, and a reproducible SVD configuration. \\
-    4. Measure two different questions & Outer-holdout predictions containing true and estimated ratings for each observed test item. & Compute RMSE and MAE for rating-estimation error. Separately rank each user's held-out predictions; define relevance as a true rating at least 8; require at least ten test items and one relevant item; then macro-average Precision@10 and Recall@10. This prevents a rating-error score from being mistaken for a Top-N retrieval score. & RMSE 1.2632, MAE 0.9625, Precision@10 0.6386, Recall@10 0.8255 for 4,802 eligible users. \\
+    3. Protect the holdout experiment & The risk that test ratings could influence fitted parameters or configuration decisions. & Split the filtered data once into 80\% training and 20\% outer test data before fitting. Within the outer training data only, compare 30-, 50-, and 100-factor SVD candidates on a seeded validation split; retain the best validation configuration. The outer test set remains untouched until final scoring. & 761,997 training ratings, 190,500 held-out ratings, and selected 30-factor SVD configuration. \\
+    4. Measure two different questions & Outer-holdout predictions containing true and estimated ratings for each observed test item. & Compute RMSE and MAE for rating-estimation error. Separately rank each user's held-out predictions; define relevance as a true rating at least 8; require at least ten test items and one relevant item; then macro-average Precision@10 and Recall@10. This prevents a rating-error score from being mistaken for a Top-N retrieval score. & RMSE 1.2551, MAE 0.9560, Precision@10 0.6397, Recall@10 0.8273 for 4,802 eligible users. \\
     5. Bound metric interpretation & The candidate set and excluded users in the ranking calculation. & Label ranking evaluation as held-out observed-item ranking, not full-catalog ranking. Users without enough test items or without a relevant held-out item are excluded under the stated rule rather than assigned artificial zero recall. Record that the random split is not temporal forecasting. & Metric charts, eligibility counts, and limitations included with results. \\
     6. Separate evaluation from serving & The need for a final Top-10 list after the test metrics have been fixed. & Refit the same configuration on all \texttt{ratings\_model} interactions only after evaluation. For each selected demonstration user, exclude every already rated model-scope anime, predict the remaining candidates, use deterministic tie-breaking, then join metadata after ranking. & \texttt{top\_10\_recommendations.csv} and seven reproducible demonstration profiles. \\
 \end{longtable}
 \endgroup
 
-The resource-aware filtering was a modelling choice, not a claim that sparse users or anime are invalid. Sampling made the run feasible, while the iterative k-core rule ensured that every retained user and anime had minimum local evidence after the mutual removals stabilised. Its cost is a narrower evaluation population, which is why every result is tied to the 952,497-interaction model dataset rather than the full cleaned catalogue. The fixed configuration was intentionally reported as a baseline: it is repeatable and suitable for the assignment requirements, but it is not presented as an exhaustive hyperparameter search.
+The resource-aware filtering was a modelling choice, not a claim that sparse users or anime are invalid. Sampling made the run feasible, while the iterative k-core rule ensured that every retained user and anime had minimum local evidence after the mutual removals stabilised. Its cost is a narrower evaluation population, which is why every result is tied to the 952,497-interaction model dataset rather than the full cleaned catalogue. A lightweight validation search compared only 30, 50, and 100 latent factors; it is reproducible but not an exhaustive hyperparameter search.
 
-The evaluation reasoning then separated an honest test from a usable serving model. An outer 80/20 split was created before SVD fitting, and the held-out ratings were not used to fit parameters or choose the fixed baseline configuration. RMSE and MAE answer how close estimated ratings are to held-out ratings, whereas Precision@10 and Recall@10 answer whether relevant held-out observations are retrieved near the top under a documented observed-item protocol. Once those metrics were fixed, a separate model was refitted on all \texttt{ratings\_model} interactions to score only anime that a demonstration user had not rated. This sequence prevents the displayed Top-10 lists from being confused with test-set evidence, future verified ratings, or objective measures of anime quality.
+The evaluation reasoning then separated an honest test from a usable serving model. An outer 80/20 split was created before SVD fitting; configuration selection used a further seeded split of the outer training data, so held-out ratings were not used to fit parameters or choose 30 latent factors. RMSE and MAE answer how close estimated ratings are to held-out ratings, whereas Precision@10 and Recall@10 answer whether relevant held-out observations are retrieved near the top under a documented observed-item protocol. Once those metrics were fixed, a separate model was refitted on all \texttt{ratings\_model} interactions to score only anime that a demonstration user had not rated. This sequence prevents the displayed Top-10 lists from being confused with test-set evidence, future verified ratings, or objective measures of anime quality.
 
 \subsection{Shared integration and review}
 The two workflows meet at explicit review checkpoints rather than only at the final writing stage. First, \membertwo accepts the cleaned files only after the scale, sentinel, duplicate, and metadata assertions from Notebook 01 pass. Second, \memberone reviews the post-sampling and post-filtering counts so the report never calls \texttt{ratings\_model} the entire dataset. Third, both members compare every reported number with the notebook-generated artifacts: cleaning counts and EDA summaries come from Notebook 01; configuration, split sizes, eligible-user counts, metrics, and Top-10 exports come from Notebook 02. This makes the notebook boundary a reproducibility control, not simply a division of labour.
@@ -237,7 +237,7 @@ where $\mu$ is the global mean rating, $b_u$ and $b_i$ are user and anime biases
 
 The full cleaned dataset was retained as the auditable data baseline. For a resource-aware model run, Notebook 02 used a reproducible random sample of 1,000,000 ratings (seed 42), then iteratively removed users and anime with fewer than five interactions. The final model data comprised 952,497 interactions, 41,370 users, and 5,985 anime. This filter improves the availability of training signal but narrows coverage, so it must not be described as the whole cleaned dataset.
 
-The fixed baseline used 50 latent factors, 20 epochs, a learning rate of 0.005, regularisation of 0.02, and random state 42. Lightweight tuning was disabled; the configuration is a reproducible baseline, not a claim of exhaustive hyperparameter optimisation. The model was trained only on the 80\% outer training split (761,997 ratings); 190,500 ratings were held out for final scoring. This ordering prevents test ratings from affecting fitted parameters or configuration selection.
+Before final scoring, a bias-only \texttt{BaselineOnly} model was fitted as a benchmark. The SVD search then used a seeded validation split created only from the 80\% outer training data and compared 30, 50, and 100 latent factors. It selected 30 factors (validation RMSE 1.2649, versus 1.2723 and 1.2817); the remaining SVD settings were 20 epochs, learning rate 0.005, regularisation of 0.02, and random state 42. The selected configuration was trained on all 761,997 outer-training ratings and evaluated once on 190,500 held-out ratings. This is lightweight tuning rather than exhaustive hyperparameter optimisation, and the outer test set did not affect configuration selection.
 
 \subsection{Evaluation protocol}
 RMSE and MAE compare predicted ratings with the outer holdout's true 1--10 scores. For ranking, predictions were grouped by user and sorted by predicted rating. An item was relevant when its true held-out rating was at least 8. Precision@10 is the fraction of the ten highest-predicted held-out items that are relevant; Recall@10 is the fraction of each eligible user's relevant held-out items recovered in that top ten. Metrics are macro-averaged over 4,802 eligible users who have at least ten test items and at least one relevant test item.
@@ -252,23 +252,23 @@ Seven users were selected deterministically to make the output inspection reprod
 \section{Implementation}
 The implementation is divided into two reproducible notebooks. Notebook 01 loads the raw CSV files, validates schema and missingness, audits sentinel values and duplicate keys, writes the two cleaned CSV files, and saves the EDA figures. Assertions verify the 1--10 scale, the absence of $-1$, unique user--anime keys, and unique metadata IDs. This notebook intentionally stops before sampling, filtering, splitting, or training.
 
-Notebook 02 reads only those cleaned outputs. It applies the fixed-seed sampling and k-core audit, creates the outer train/test split, fits Surprise SVD, calculates rating and ranking metrics, and saves evaluation charts. It then refits a serving model on the final model data, excludes previously rated anime from each candidate set, joins metadata with fallbacks, and exports ten recommendations per demonstration user. The two-stage design keeps evaluation honest while permitting the recommendation model to use all model-scope interactions.
+Notebook 02 reads only those cleaned outputs. It applies the fixed-seed sampling and k-core audit, creates the outer train/test split, benchmarks a bias-only model, tunes the SVD factor count within the outer training data, calculates rating and ranking metrics, and saves evaluation charts. It then refits the selected SVD configuration on the final model data, excludes previously rated anime from each candidate set, joins metadata with fallbacks, and exports ten recommendations per demonstration user. The two-stage design keeps evaluation honest while permitting the recommendation model to use all model-scope interactions.
 
 \section{Results and evaluation}
-Table~\ref{tab:metrics} reports the outer-holdout results. RMSE 1.2632 and MAE 0.9625 quantify rating-prediction error on the 1--10 scale; lower is better. Precision@10 of 0.6386 and Recall@10 of 0.8255 quantify performance only under the stated relevant-rating threshold, eligible-user rule, and observed-item candidate set. They should not be interpreted as full-catalog Top-10 performance.
+Table~\ref{tab:metrics} reports the outer-holdout results for the 30-factor SVD selected using only the outer-training data. The bias-only benchmark obtained RMSE 1.2552 and MAE 0.9604; the selected SVD marginally reduced both errors to 1.2551 and 0.9560, respectively. Precision@10 of 0.6397 and Recall@10 of 0.8273 quantify performance only under the stated relevant-rating threshold, eligible-user rule, and observed-item candidate set. They should not be interpreted as full-catalog Top-10 performance.
 
 \begin{table}[H]
   \centering
-  \caption{SVD outer-holdout evaluation on 952,497 sampled and k-core-filtered interactions (seed 42).}
+  \caption{Selected 30-factor SVD outer-holdout evaluation on 952,497 sampled and k-core-filtered interactions (seed 42).}
   \label{tab:metrics}
   \begin{tabular}{lr l}
     \toprule
     \textbf{Metric} & \textbf{Value} & \textbf{Direction} \\
     \midrule
-    RMSE & 1.2632 & Lower is better \\
-    MAE & 0.9625 & Lower is better \\
-    Precision@10 & 0.6386 & Higher is better \\
-    Recall@10 & 0.8255 & Higher is better \\
+    RMSE & 1.2551 & Lower is better \\
+    MAE & 0.9560 & Lower is better \\
+    Precision@10 & 0.6397 & Higher is better \\
+    Recall@10 & 0.8273 & Higher is better \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -280,6 +280,13 @@ Figures~\ref{fig:error-metrics} and \ref{fig:ranking-metrics} make the two evalu
   \includegraphics[width=0.72\linewidth]{figures/svd_error_metrics.png}
   \caption{SVD rating-prediction error on the outer holdout (lower is better).}
   \label{fig:error-metrics}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.82\linewidth]{figures/svd_error_distribution.png}
+  \caption{Distribution of absolute prediction errors for the selected SVD model on the outer holdout. The dashed line marks MAE.}
+  \label{fig:error-distribution}
 \end{figure}
 
 \begin{figure}[H]
@@ -312,7 +319,7 @@ The serving export contains ten unseen anime for each of the seven demonstration
   \end{tabularx}
 \end{table}
 
-The detailed predictions in Appendix~\ref{tab:case-top-ten} illustrate why a single aggregate metric cannot describe every user experience. User \texttt{10004}, with only five retained ratings, receives a highly scored but necessarily less evidence-rich list. User \texttt{42635} has 513 ratings, giving the model substantially more interaction signal, yet its highest estimated preference is 8.8350 rather than a ceiling score. The highly positive profile (user \texttt{45649}) receives ten estimates of 10.0000, while the more critical profile (user \texttt{24323}) has a highest estimate of 5.4149. These are model estimates conditional on observed ratings and the fitted score range, not statements that one user's recommendations are objectively better than another's. The broad-genre user (\texttt{65836}) demonstrates that the list can span several genres, but the latent factors themselves must not be interpreted as named genre dimensions.
+The detailed predictions in Appendix~\ref{tab:case-top-ten} illustrate why a single aggregate metric cannot describe every user experience. User \texttt{10004}, with only five retained ratings, receives a highly scored but necessarily less evidence-rich list. User \texttt{42635} has 513 ratings, giving the model substantially more interaction signal, yet its highest estimated preference is 8.8971 rather than a ceiling score. The highly positive profile (user \texttt{45649}) receives ten estimates of 10.0000, while the more critical profile (user \texttt{24323}) has a highest estimate of 5.1974. These are model estimates conditional on observed ratings and the fitted score range, not statements that one user's recommendations are objectively better than another's. The broad-genre user (\texttt{65836}) demonstrates that the list can span several genres, but the latent factors themselves must not be interpreted as named genre dimensions.
 
 Every row in Appendix~\ref{tab:case-top-ten} is an unseen anime at the time of serving. Predicted ratings are rounded to four decimal places for presentation; the full-precision values, metadata, and all ranks are retained in \texttt{outputs/top\_10\_recommendations.csv}. Public \texttt{anime\_average\_rating} is deliberately excluded from that appendix so it cannot be confused with the personalised SVD prediction.
 
@@ -336,99 +343,99 @@ This appendix reports the complete $N=10$ unseen-anime lists exported by the ser
   \endfoot
   \multicolumn{3}{@{}l}{\textbf{Limited history --- user \texttt{10004}}} \\
   \addlinespace[2pt]
-  1 & Ginga Eiyuu Densetsu & 9.8077 \\
-  2 & Gintama & 9.6646 \\
-  3 & Aria The Origination & 9.6114 \\
-  4 & Gintama': Enchousen & 9.6038 \\
-  5 & Gintama Movie: Kanketsu-hen -- Yorozuya yo Eien Nare & 9.5993 \\
-  6 & Shingeki no Kyojin & 9.5738 \\
-  7 & Katanagatari & 9.5568 \\
-  8 & Gintama° & 9.5395 \\
-  9 & Rainbow: Nisha Rokubou no Shichinin & 9.5193 \\
-  10 & Mushishi Zoku Shou 2nd Season & 9.4905 \\
+  1 & Ginga Eiyuu Densetsu & 9.9322 \\
+  2 & Kimi no Na wa. & 9.5840 \\
+  3 & Hotaru no Haka & 9.5256 \\
+  4 & Gintama': Enchousen & 9.4666 \\
+  5 & Aria The Origination & 9.4278 \\
+  6 & Gintama' & 9.3549 \\
+  7 & Gintama$^\circ$ & 9.3215 \\
+  8 & Mushishi Special: Hihamukage & 9.2763 \\
+  9 & Gintama Movie: Kanketsu-hen -- Yorozuya yo Eien Nare & 9.2309 \\
+  10 & Ping Pong The Animation & 9.2182 \\
   \addlinespace[5pt]
   \multicolumn{3}{@{}l}{\textbf{Developing history --- user \texttt{10060}}} \\
   \addlinespace[2pt]
-  1 & Ginga Eiyuu Densetsu & 10.0000 \\
-  2 & Kimi no Na wa. & 9.6462 \\
-  3 & Tengen Toppa Gurren Lagann & 9.6082 \\
-  4 & Gintama° & 9.6004 \\
-  5 & Gintama Movie: Kanketsu-hen -- Yorozuya yo Eien Nare & 9.5549 \\
-  6 & Gintama' & 9.4975 \\
-  7 & Mushishi & 9.3837 \\
-  8 & Gintama': Enchousen & 9.3663 \\
-  9 & Neon Genesis Evangelion: The End of Evangelion & 9.3553 \\
-  10 & Fullmetal Alchemist: Brotherhood & 9.3263 \\
+  1 & Ginga Eiyuu Densetsu & 9.9855 \\
+  2 & Gintama$^\circ$ & 9.7026 \\
+  3 & Gintama' & 9.5512 \\
+  4 & Code Geass: Hangyaku no Lelouch & 9.5019 \\
+  5 & Kimi no Na wa. & 9.4868 \\
+  6 & Code Geass: Hangyaku no Lelouch R2 & 9.4163 \\
+  7 & Nana & 9.3691 \\
+  8 & Haikyuu!!: Karasuno Koukou VS Shiratorizawa Gakuen Koukou & 9.3169 \\
+  9 & Ping Pong The Animation & 9.3159 \\
+  10 & Aria The Origination & 9.3152 \\
   \addlinespace[5pt]
   \multicolumn{3}{@{}l}{\textbf{Typical history --- user \texttt{25321}}} \\
   \addlinespace[2pt]
-  1 & Ginga Eiyuu Densetsu & 9.7105 \\
-  2 & Neon Genesis Evangelion: The End of Evangelion & 9.6636 \\
-  3 & Aria The Origination & 9.4069 \\
-  4 & Gintama': Enchousen & 9.2951 \\
-  5 & Hunter x Hunter (2011) & 9.2927 \\
-  6 & Code Geass: Hangyaku no Lelouch R2 & 9.1926 \\
-  7 & Gintama° & 9.1624 \\
-  8 & Kimi no Na wa. & 9.1436 \\
-  9 & JoJo no Kimyou na Bouken (TV) & 9.1095 \\
-  10 & Code Geass: Hangyaku no Lelouch & 9.0842 \\
+  1 & Ginga Eiyuu Densetsu & 9.6250 \\
+  2 & Gintama$^\circ$ & 9.4408 \\
+  3 & Neon Genesis Evangelion & 9.4265 \\
+  4 & Fullmetal Alchemist: Brotherhood & 9.3124 \\
+  5 & Byousoku 5 Centimeter & 9.2897 \\
+  6 & Hunter x Hunter (2011) & 9.2766 \\
+  7 & Gintama Movie: Kanketsu-hen -- Yorozuya yo Eien Nare & 9.2697 \\
+  8 & Monster & 9.2488 \\
+  9 & Gintama': Enchousen & 9.1641 \\
+  10 & Kara no Kyoukai 5: Mujun Rasen & 9.1538 \\
   \addlinespace[5pt]
   \multicolumn{3}{@{}l}{\textbf{Very active --- user \texttt{42635}}} \\
   \addlinespace[2pt]
-  1 & Ginga Eiyuu Densetsu & 8.8350 \\
-  2 & Aria The Origination & 8.7820 \\
-  3 & Serial Experiments Lain & 8.7504 \\
-  4 & Gintama': Enchousen & 8.5096 \\
-  5 & Gintama° & 8.4872 \\
-  6 & Tengen Toppa Gurren Lagann & 8.4477 \\
-  7 & Azumanga Daioh & 8.4399 \\
-  8 & Monogatari Series: Second Season & 8.4074 \\
-  9 & Clannad: After Story & 8.3053 \\
-  10 & Seirei no Moribito & 8.3019 \\
+  1 & Ginga Eiyuu Densetsu & 8.8971 \\
+  2 & Mushishi & 8.7969 \\
+  3 & Toki wo Kakeru Shoujo & 8.6651 \\
+  4 & Sword Art Online & 8.6465 \\
+  5 & Fullmetal Alchemist: Brotherhood & 8.5818 \\
+  6 & Shigatsu wa Kimi no Uso & 8.5690 \\
+  7 & Kimi no Na wa. & 8.5641 \\
+  8 & Gintama Movie: Kanketsu-hen -- Yorozuya yo Eien Nare & 8.5552 \\
+  9 & Shingeki no Kyojin & 8.5115 \\
+  10 & Gintama' & 8.4912 \\
   \addlinespace[5pt]
   \multicolumn{3}{@{}l}{\textbf{Highly positive --- user \texttt{45649}}} \\
   \addlinespace[2pt]
   1 & Cowboy Bebop & 10.0000 \\
   2 & Uchuu Kaizoku Captain Harlock & 10.0000 \\
   3 & Carnival Phantasm & 10.0000 \\
-  4 & Top wo Nerae 2! Diebuster & 10.0000 \\
-  5 & Ore no Imouto ga Konnani Kawaii Wake ga Nai Specials & 10.0000 \\
-  6 & Coquelicot-zaka kara & 10.0000 \\
-  7 & Aa! Megami-sama! (TV) Specials & 10.0000 \\
+  4 & Shouwa Monogatari & 10.0000 \\
+  5 & Top wo Nerae 2! Diebuster & 10.0000 \\
+  6 & Ore no Imouto ga Konnani Kawaii Wake ga Nai Specials & 10.0000 \\
+  7 & Coquelicot-zaka kara & 10.0000 \\
   8 & Bakuman. 2nd Season & 10.0000 \\
   9 & Toriko & 10.0000 \\
-  10 & Kanojo to Kanojo no Neko & 10.0000 \\
+  10 & Nurarihyon no Mago: Sennen Makyou & 10.0000 \\
   \addlinespace[5pt]
   \multicolumn{3}{@{}l}{\textbf{More critical --- user \texttt{24323}}} \\
   \addlinespace[2pt]
-  1 & Mobile Suit Gundam Seed Destiny & 5.4149 \\
-  2 & Sen to Chihiro no Kamikakushi & 4.7674 \\
-  3 & Clannad: After Story & 4.5838 \\
-  4 & Naruto: Shippuuden Movie 2 - Kizuna & 4.5431 \\
-  5 & Mobile Suit Gundam Seed & 4.4712 \\
-  6 & Watashi ga Motenai no wa Dou Kangaetemo Omaera ga Warui! & 4.4710 \\
-  7 & Shinsekai yori & 4.4677 \\
-  8 & Fairy Tail & 4.3989 \\
-  9 & Gungrave & 4.3516 \\
-  10 & Ginga Eiyuu Densetsu & 4.3406 \\
+  1 & Dragon Ball Z & 5.1974 \\
+  2 & Sennen Joyuu & 5.0600 \\
+  3 & Hotaru no Haka & 4.9261 \\
+  4 & Suzumiya Haruhi no Shoushitsu & 4.8688 \\
+  5 & Ginga Eiyuu Densetsu & 4.8455 \\
+  6 & Gintama': Enchousen & 4.4868 \\
+  7 & Kimi no Na wa. & 4.4423 \\
+  8 & Kimi ga Nozomu Eien & 4.3804 \\
+  9 & Digimon Adventure & 4.3404 \\
+  10 & Tengen Toppa Gurren Lagann & 4.2814 \\
   \addlinespace[5pt]
   \multicolumn{3}{@{}l}{\textbf{Broad genre exposure --- user \texttt{65836}}} \\
   \addlinespace[2pt]
-  1 & Cowboy Bebop & 10.0000 \\
-  2 & Death Note & 10.0000 \\
-  3 & Ginga Eiyuu Densetsu & 9.4676 \\
-  4 & Shinsekai yori & 9.4242 \\
-  5 & Steins;Gate & 9.4122 \\
-  6 & Mushishi & 9.2666 \\
-  7 & Hajime no Ippo & 9.1375 \\
-  8 & Clannad: After Story & 9.0899 \\
-  9 & Tengen Toppa Gurren Lagann & 9.0542 \\
-  10 & Ping Pong The Animation & 9.0004 \\
+  1 & Ghost in the Shell & 10.0000 \\
+  2 & Dragon Ball Z & 9.3731 \\
+  3 & Gintama': Enchousen & 9.3722 \\
+  4 & Nana & 9.1538 \\
+  5 & Naruto Movie 1: Dai Katsugeki!! Yuki Hime Shinobu Houjou Dattebayo! & 9.1357 \\
+  6 & Neon Genesis Evangelion: The End of Evangelion & 8.9466 \\
+  7 & Rurouni Kenshin: Meiji Kenkaku Romantan - Tsuioku-hen & 8.9105 \\
+  8 & K-On! & 8.8223 \\
+  9 & Kino no Tabi: The Beautiful World & 8.7995 \\
+  10 & Mahou Shoujo Madoka$^\star$Magica Movie 2: Eien no Monogatari & 8.6599 \\
 \end{longtable}
 \endgroup
 
 \section{Conclusion and lessons learned}
-This project produced a reproducible anime recommender based on explicit ratings and biased SVD. The data audit preserves the meaning of watched-but-unrated interactions, removes duplicate user--anime ambiguity, and exposes the sparse, positively skewed, long-tail structure that affects recommendation quality. On the documented sampled and filtered outer holdout, the model achieved RMSE 1.2632, MAE 0.9625, Precision@10 0.6386, and Recall@10 0.8255.
+This project produced a reproducible anime recommender based on explicit ratings and biased SVD. The data audit preserves the meaning of watched-but-unrated interactions, removes duplicate user--anime ambiguity, and exposes the sparse, positively skewed, long-tail structure that affects recommendation quality. On the documented sampled and filtered outer holdout, the validation-selected 30-factor model achieved RMSE 1.2551, MAE 0.9560, Precision@10 0.6397, and Recall@10 0.8273.
 
 As students who had previously learned recommender-system ideas mainly in theory, our first important lesson was that a model cannot compensate for an unclear definition of the data. At first, it is tempting to regard every row in a ratings file as a training example and to begin fitting SVD immediately. Working with the dataset showed why that is unsafe: the value $-1$ means ``watched but not rated,'' not a low preference, and repeated user--anime pairs do not directly form one matrix cell. We learned to ask what each value represents before applying a transformation, to validate the result with assertions, and to keep an audit trail of every removed or merged row. In other words, data cleaning is not only a technical preparation step; it is a modelling decision that determines the meaning of the signal learned by the recommender.
 
